@@ -1,41 +1,55 @@
 'use strict';
 
+function drawRect(ctx, x, y, width, height, fill) {
+  ctx.fillStyle = fill;
+  ctx.fillRect(x, y, width, height);
+}
+
+function drawText(ctx, text, x, y) {
+  ctx.fillStyle = '#000000';
+  ctx.fillText(text, x, y);
+}
+
+function getRandomColor() {
+  return 'rgba(0,0,255,' + Math.random() + ')';
+}
+
+function calculateBarHeight(time, step) {
+  return time / step;
+}
+
 function renderStatistics(ctx, names, times) {
-  var cloudX = 110,
-      cloudY = 20,
-      cloudWidth = 420,
-      cloudHeight = 270;
+  var cloudX = 110;
+  var cloudY = 20;
+  var cloudWidth = 420;
+  var cloudHeight = 270;
 
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-  ctx.fillRect(cloudX, cloudY, cloudWidth, cloudHeight);
-
-  ctx.fillStyle = '#ffffff';
-  ctx.fillRect(cloudX - 10, cloudY - 10, cloudWidth, cloudHeight);
+  drawRect(ctx, cloudX, cloudY, cloudWidth, cloudHeight, 'rgba(0,0,0,0.7)');
+  drawRect(ctx, cloudX - 10, cloudY - 10, cloudWidth, cloudHeight, '#ffffff');
 
   ctx.font = '16px "PT Mono"';
-  ctx.fillStyle = '#000000';
-  ctx.fillText('Ура, вы победили!', 230, 40);
-  ctx.fillText('Список результатов:', 225, 70);
+  drawText(ctx, 'Ура, вы победили!', 230, 40);
+  drawText(ctx, 'Список результатов:', 225, 70);
 
-  var currentX = 130,
-      currentY = 260,
-      barWidth = 40,
-      barMarginRight = 50,
-      nameMarginTop = 20,
-      scoreMarginBottom = 30;
-  names.forEach(function(playerName, idx) {
-    ctx.fillStyle = '#000000';
-    ctx.fillText(playerName, currentX, currentY);
-    var randomOpacity = Math.random();
-    ctx.fillStyle = 'rgba(0, 0, 255, ' + randomOpacity + ')';
-    if (playerName == 'Вы') {
-      ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-    }
+  var maxBarHeight = 130;
+  var currentX = 40;
+  var currentY = 260;
+  var barWidth = 40;
+  var barMarginRight = 50;
+  var nameMarginTop = 20;
+  var scoreMarginBottom = 30;
+  var defaultColor = 'rgba(255,0,0,1)';
+  var maxTime = Math.max.apply(null, times);
+  var step = maxTime / maxBarHeight;
+
+  names.forEach(function (playerName, idx) {
+    var barColor = playerName === 'Вы' ? defaultColor : getRandomColor();
     var playerTime = Math.round(times[idx]);
-    var barHeight = playerTime / 100;
-    ctx.fillRect(currentX, currentY - barHeight - nameMarginTop, barWidth, barHeight);
-    ctx.fillStyle = '#000000';
-    ctx.fillText(playerTime, currentX, currentY - barHeight - scoreMarginBottom);
+    var barHeight = calculateBarHeight(playerTime, step);
     currentX += barWidth + barMarginRight;
+
+    drawText(ctx, playerName, currentX, currentY);
+    drawRect(ctx, currentX, currentY - barHeight - nameMarginTop, barWidth, barHeight, barColor);
+    drawText(ctx, playerTime, currentX, currentY - barHeight - scoreMarginBottom);
   });
 }

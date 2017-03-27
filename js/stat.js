@@ -11,14 +11,20 @@ function drawText(ctx, text, x, y) {
 }
 
 function getRandomColor() {
-  return 'rgba(0,0,255,' + Math.random() + ')';
+  var opacity = Math.random();
+  return 'rgba(0,0,255,' + opacity + ')';
 }
 
 function calculateBarHeight(time, step) {
   return time / step;
 }
 
-function renderStatistics(ctx, names, times) {
+function getCurrentX(idx, barMargin, barWidth) {
+  var paddingStart = 40;
+  return paddingStart + (barMargin + barWidth) * (idx + 1);
+}
+
+window.renderStatistics = function (ctx, names, times) {
   var cloudX = 110;
   var cloudY = 20;
   var cloudWidth = 420;
@@ -46,10 +52,10 @@ function renderStatistics(ctx, names, times) {
     var barColor = playerName === 'Вы' ? defaultColor : getRandomColor();
     var playerTime = Math.round(times[idx]);
     var barHeight = calculateBarHeight(playerTime, step);
-    currentX += barWidth + barMarginRight;
+    currentX = getCurrentX(idx, barMarginRight, barWidth);
 
     drawText(ctx, playerName, currentX, currentY);
     drawRect(ctx, currentX, currentY - barHeight - nameMarginTop, barWidth, barHeight, barColor);
     drawText(ctx, playerTime, currentX, currentY - barHeight - scoreMarginBottom);
   });
-}
+};

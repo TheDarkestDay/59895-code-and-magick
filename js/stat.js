@@ -38,7 +38,6 @@ window.renderStatistics = function (ctx, names, times) {
   drawText(ctx, 'Список результатов:', 225, 70);
 
   var maxBarHeight = 130;
-  var currentX = 40;
   var currentY = 260;
   var barWidth = 40;
   var barMarginRight = 50;
@@ -52,7 +51,7 @@ window.renderStatistics = function (ctx, names, times) {
     var barColor = playerName === 'Вы' ? defaultColor : getRandomColor();
     var playerTime = Math.round(times[idx]);
     var barHeight = calculateBarHeight(playerTime, step);
-    currentX = getCurrentX(idx, barMarginRight, barWidth);
+    var currentX = getCurrentX(idx, barMarginRight, barWidth);
 
     drawText(ctx, playerName, currentX, currentY);
     drawRect(ctx, currentX, currentY - barHeight - nameMarginTop, barWidth, barHeight, barColor);

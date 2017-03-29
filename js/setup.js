@@ -30,8 +30,8 @@ function getRandomElement(arr) {
 }
 
 var setup = document.querySelector('.setup');
-var similarWizards = document.querySelector('.setup-similar');
-var similarWizardsList = document.querySelector('.setup-similar-list');
+var similarWizards = setup.querySelector('.setup-similar');
+var similarWizardsList = similarWizards.querySelector('.setup-similar-list');
 var wizardTemplate = document.querySelector('#similar-wizard-template').content;
 
 var FIRST_NAMES = ['Иван', 'Хуан Себастиан', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
